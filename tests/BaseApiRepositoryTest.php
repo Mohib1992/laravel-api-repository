@@ -27,7 +27,12 @@ class BaseApiRepositoryTest extends TestCase
         // Mock required abstract methods
         $this->repository->shouldAllowMockingProtectedMethods();
         $this->repository->shouldReceive('headers')->andReturn(['Authorization' => 'Bearer test_token']);
-        $this->repository->shouldReceive('authenticate');
+        
+        // Initialize the repository (call constructor to set $baseUrl)
+        $this->repository->__construct();
+
+        // Mock RateLimiter by default to allow requests
+        RateLimiter::shouldReceive('attempt')->andReturn(true)->byDefault();
     }
 
     /** @tests */
@@ -37,7 +42,7 @@ class BaseApiRepositoryTest extends TestCase
             'https://api.example.com/test-endpoint' => Http::response(['data' => 'Test Response'], 200),
         ]);
 
-        $response = $this->repository->get('/tests-endpoint');
+        $response = $this->repository->get('/test-endpoint');
 
         $this->assertEquals(['data' => 'Test Response'], $response);
     }

@@ -83,5 +83,5 @@ abstract class BaseApiRepository
     }
 
     abstract protected function headers();
-    abstract protected function authenticate();
+
 }

@@ -8,6 +8,10 @@ class LaravelApiRepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/laravel-api-repository.php', 'laravel-api-repository');
+
+        $this->app->bind('api-repository', function () {
+            return new ApiRepository();
+        });
     }
 
     public function boot(): void
